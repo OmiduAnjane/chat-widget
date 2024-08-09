@@ -1,22 +1,20 @@
+// chat-widget.js
+
 (function() {
-    // Create and style the chat widget
     var widgetContainer = document.createElement('div');
     widgetContainer.id = 'chat-widget';
     widgetContainer.className = 'chat-widget';
 
-    // Create chat header
     var header = document.createElement('div');
     header.className = 'chat-header';
-    header.textContent = 'Chat with us';
+    header.innerHTML = '<h3>Chat with us</h3><button class="close-btn">&times;</button>';
     widgetContainer.appendChild(header);
 
-    // Create chat box
     var chatBox = document.createElement('div');
     chatBox.id = 'chat-box';
     chatBox.className = 'chat-box';
     widgetContainer.appendChild(chatBox);
 
-    // Create chat form
     var form = document.createElement('form');
     form.id = 'chat-form';
     form.className = 'chat-form';
@@ -35,12 +33,16 @@
     widgetContainer.appendChild(form);
     document.body.appendChild(widgetContainer);
 
-    // Toggle chat widget visibility
-    header.addEventListener('click', function() {
-        widgetContainer.style.display = widgetContainer.style.display === 'none' ? 'block' : 'none';
-    });
+    var isOpen = false;
 
-    // Handle form submission
+    function toggleWidget() {
+        isOpen = !isOpen;
+        widgetContainer.classList.toggle('open', isOpen);
+    }
+
+    header.addEventListener('click', toggleWidget);
+    widgetContainer.querySelector('.close-btn').addEventListener('click', toggleWidget);
+
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
         
@@ -54,7 +56,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     messages: [{ role: 'user', content: message }],
-                    options: {}  // Add any additional options if needed
+                    options: {}
                 })
             });
             
